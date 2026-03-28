@@ -5,8 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Página do Formulário</title>
     <script src="https://cdn.socket.io/4.5.0/socket.io.min.js"></script>
+
     <style>
-        /* Estilos Gerais */
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background-color: #f4f4f9;
@@ -18,7 +18,6 @@
             height: 100vh;
         }
 
-        /* Container Principal */
         .container {
             background-color: #ffffff;
             padding: 30px;
@@ -29,13 +28,12 @@
         }
 
         h1 {
-            font-size: 24px;
+            font-size: 20px;
             color: #333;
-            margin-bottom: 20px;
+            margin-bottom: 10px;
             text-align: center;
         }
 
-        /* Estilos dos Dropdowns e Textarea */
         select, textarea {
             width: 100%;
             padding: 12px;
@@ -44,12 +42,6 @@
             border-radius: 8px;
             font-size: 16px;
             background-color: #f9f9f9;
-            transition: border-color 0.3s ease;
-        }
-
-        select:focus, textarea:focus {
-            border-color: #007bff;
-            outline: none;
         }
 
         textarea {
@@ -57,7 +49,6 @@
             min-height: 100px;
         }
 
-        /* Estilo do Botão */
         button {
             width: 100%;
             padding: 12px;
@@ -67,7 +58,6 @@
             border-radius: 8px;
             font-size: 16px;
             cursor: pointer;
-            transition: background-color 0.3s ease;
         }
 
         button:hover {
@@ -75,71 +65,69 @@
         }
     </style>
 </head>
+
 <body>
     <div class="container">
-        <div>
-            <h1>Sala</h1>
-            <select id="dropdown">
-                <option value="" disabled selected>Selecione a Sala</option>
-                <option value="Sala de Ultrasson/Curativo">Sala de Ultrasson/Curativo</option>
-                <option value="Consultório G.O 2">Consultório G.O 2</option>
-                <option value="Consultório Clinico 2">Consultório Clinico 2</option>
-                <option value="Consultório Pediatria 3">Consultório Pediatria 3</option>
-                <option value="Pré Consulta">Pré Consulta</option>
-                <option value="Coordenação/Consultório clínico 3">Coordenação/Consultório clínico 3</option>
-                <option value="Sala de Sangue">Sala de Sangue</option>
-                <option value="Consultório Odontológico">Consultório Odontológico</option>
-                <option value="Sala de Medição/Enfermagem">Sala de Medição/Enfermagem</option>
-            </select>
-        </div>
-        <div>
-            <h1>Paciente</h1>
-            <textarea id="textarea" placeholder="Digite a senha..."></textarea>
-        </div>
-        <div>
-            <h1>Profissional</h1>
-            <select id="dropdown_doutor">
-                <option value="" disabled selected>Selecione o Dr(a)</option>
-                <option value="Jane">Jane</option>
-                <option value="Luanna">Luanna</option>
-                <option value="Osmair">Osmair</option>
-                <option value="Amanda">Amanda</option>
-                <option value="Arthur">Arthur</option>
-                <option value="Andreia">Andreia</option>
-                <option value="Fernando Viola">Fernando Viola</option>
-                <option value="Luiz Alberto">Luiz Alberto</option> 
-                <option value="Tec Enf Rosane">Tec Enf Rosane</option>
-                <option value="Tec Enf Laura">Tec Enf Laura</option>
-                <option value="Tec Enf Jheinei">Tec Enf Jheinei</option>
-                <option value="Tec Enf Rinele">Tec Enf Rinele</option> 
-                <option value="Enf Luana">Enf Luana</option>
-                <option value="Bianca">Bianca</option>
-                <option value="Michele">Michele</option> 
-                <option value="Isabela">Isabela</option>
-                <option value=" "> </option>
 
-            </select>
-        </div>
+        <h1>Sala</h1>
+        <select id="dropdown">
+            <option value="" disabled selected>Selecione a Sala</option>
+            <option value="Sala de Ultrasson/Curativo">Sala de Ultrasson/Curativo</option>
+            <option value="Consultório G.O 2">Consultório G.O 2</option>
+            <option value="Consultório Clinico 2">Consultório Clinico 2</option>
+            <option value="Consultório Pediatria 3">Consultório Pediatria 3</option>
+            <option value="Pré Consulta">Pré Consulta</option>
+            <option value="Coordenação/Consultório clínico 3">Coordenação/Consultório clínico 3</option>
+            <option value="Sala de Sangue">Sala de Sangue</option>
+            <option value="Consultório Odontológico">Consultório Odontológico</option>
+            <option value="Sala de Medição/Enfermagem">Sala de Medição/Enfermagem</option>
+        </select>
+
+        <h1>Paciente</h1>
+        <textarea id="textarea" placeholder="Digite a senha..."></textarea>
+
+        <h1>Profissional</h1>
+        <select id="dropdown_doutor">
+            <option value="" disabled selected>Selecione o Dr(a)</option>
+            <option value="Jane">Jane</option>
+            <option value="Luanna">Luanna</option>
+            <option value="Osmair">Osmair</option>
+            <option value="Amanda">Amanda</option>
+            <option value="Arthur">Arthur</option>
+            <option value="Andreia">Andreia</option>
+            <option value="Fernando Viola">Fernando Viola</option>
+            <option value="Luiz Alberto">Luiz Alberto</option> 
+            <option value="Tec Enf Rosane">Tec Enf Rosane</option>
+            <option value="Tec Enf Laura">Tec Enf Laura</option>
+            <option value="Tec Enf Jheinei">Tec Enf Jheinei</option>
+            <option value="Tec Enf Rinele">Tec Enf Rinele</option> 
+            <option value="Enf Luana">Enf Luana</option>
+            <option value="Bianca">Bianca</option>
+            <option value="Michele">Michele</option> 
+            <option value="Isabela">Isabela</option>
+        </select>
+
         <button onclick="enviar()">Enviar</button>
+
     </div>
 
     <script>
-        const socket = io(); // Faz a comunicação com o backend por WebSocket
+        const socket = io();
 
         function enviar() {
-            const dropdown = document.getElementById('dropdown');
-            const selectedSala = dropdown.value; // Pega a opção que o cliente solicitou
-            socket.emit('send_sala', { sala: selectedSala }); // Envia ao servidor a opção
+            const sala = document.getElementById('dropdown').value;
+            const senha = document.getElementById('textarea').value;
+            const doutor = document.getElementById('dropdown_doutor').value;
 
-            const textarea = document.getElementById('textarea');
-            const selectedSenha = textarea.value;
-            socket.emit('send_senha', { senha: selectedSenha });
+            // 🔥 ENVIA TUDO JUNTO (SEM BUG)
+            socket.emit('chamada', {
+                sala: sala,
+                senha: senha,
+                doutor: doutor
+            });
 
-            const dropdown_doutor = document.getElementById('dropdown_doutor');
-            const selectedDoutor = dropdown_doutor.value;
-            socket.emit('send_doutor', { doutor: selectedDoutor });
-
-            socket.emit('tocar_som');
+            // opcional: limpa os campos depois de enviar
+            document.getElementById('textarea').value = "";
         }
     </script>
 </body>
