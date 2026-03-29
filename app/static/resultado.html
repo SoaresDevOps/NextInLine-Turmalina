@@ -4,10 +4,7 @@
     <meta charset="UTF-8">
     <title>Painel</title>
 
-    <!-- Som -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/howler/2.2.4/howler.min.js"></script>
-
-    <!-- Socket -->
     <script src="https://cdn.socket.io/4.5.0/socket.io.min.js"></script>
 
     <style>
@@ -23,7 +20,6 @@
             width: 100%;
             height: 100%;
             object-fit: cover;
-            background: black;
         }
 
         #painel {
@@ -37,24 +33,32 @@
         }
 
         h1 {
+            font-size: 40px;
+            margin: 10px;
+        }
+
+        .valor {
             font-size: 50px;
-            margin: 10px 0;
+            font-weight: bold;
         }
     </style>
 </head>
 
 <body>
 
-<!-- 🎥 VÍDEO COMPATÍVEL COM TV -->
-<video id="video" autoplay muted playsinline webkit-playsinline preload="auto">
-    <source src="{{ url_for('static', filename='videos/video1.mp4') }}" type="video/mp4">
+<video id="video" autoplay muted playsinline webkit-playsinline>
+    <source src="{{ url_for('static', filename='videos/video1.mp4') }}">
 </video>
 
-<!-- 📋 PAINEL -->
 <div id="painel">
-    <h1 id="sala"></h1>
-    <h1 id="senha"></h1>
-    <h1 id="doutor"></h1>
+    <h1>Sala:</h1>
+    <div id="sala" class="valor"></div>
+
+    <h1>Paciente:</h1>
+    <div id="senha" class="valor"></div>
+
+    <h1>Profissional:</h1>
+    <div id="doutor" class="valor"></div>
 </div>
 
 <script>
@@ -63,47 +67,38 @@
     const video = document.getElementById('video');
     const painel = document.getElementById('painel');
 
-    // 🔇 FORÇA SEM SOM (TV SAMSUNG)
+    // 🔇 SEMPRE sem som
     video.muted = true;
     video.volume = 0;
 
-    // 🔊 SOM (HOWLER - MELHOR PRA TV)
+    // 🔊 SOM
     const som = new Howl({
         src: ["{{ url_for('static', filename='audio/som.mp3') }}"],
         html5: true,
         volume: 1.0
     });
 
+    let timeout;
+    let tempoAtual = 0; // 🔥 guarda onde o vídeo parou
+
     // 🎬 LISTA DE VÍDEOS
     const videos = [
         "{{ url_for('static', filename='videos/video1.mp4') }}",
         "{{ url_for('static', filename='videos/video2.mp4') }}",
-        "{{ url_for('static', filename='videos/video3.mp4') }}",
-        "{{ url_for('static', filename='videos/video4.mp4') }}"
+        "{{ url_for('static', filename='videos/video3.mp4') }}"
     ];
 
     let index = 0;
-    let timeout;
 
-    // 🔥 FORÇA CARREGAMENTO (IMPORTANTE PRA TV)
-    function iniciarVideo() {
-        video.load();
-        video.play().catch(e => console.log("Erro play:", e));
-    }
-
-    // 🔁 TROCA AUTOMÁTICA DE VÍDEO
+    // 🔁 troca de vídeo normal (quando termina)
     video.addEventListener('ended', () => {
         index++;
         if (index >= videos.length) index = 0;
 
         video.src = videos[index];
-        iniciarVideo();
+        video.load();
+        video.play();
     });
-
-    // 🚀 INICIA VÍDEO AO CARREGAR
-    window.onload = () => {
-        iniciarVideo();
-    };
 
     // 📡 RECEBE CHAMADA
     socket.on('receive_chamada', (data) => {
@@ -113,6 +108,9 @@
         document.getElementById('senha').innerText = data.senha || "-";
         document.getElementById('doutor').innerText = data.doutor || "-";
 
+        // 🔥 GUARDA TEMPO ATUAL DO VÍDEO
+        tempoAtual = video.currentTime;
+
         // Para vídeo
         video.pause();
         video.style.display = "none";
@@ -120,20 +118,30 @@
         // Mostra painel
         painel.style.display = "block";
 
-        // 🔊 TOCA SOM
-        som.play();
+        // 🔊 TOCA SOM (forçado)
+        try {
+            som.stop();
+            som.play();
+        } catch(e) {
+            console.log(e);
+        }
 
         clearTimeout(timeout);
 
-        // ⏱ 10 SEGUNDOS
+        // ⏱ 10 segundos
         timeout = setTimeout(() => {
             painel.style.display = "none";
             video.style.display = "block";
-            iniciarVideo();
+
+            // 🔥 VOLTA DE ONDE PAROU
+            video.currentTime = tempoAtual;
+
+            video.play().catch(e => console.log(e));
+
         }, 10000);
     });
 
-    // 🔓 DESBLOQUEIA ÁUDIO (CASO A TV EXIJA INTERAÇÃO)
+    // 🔓 LIBERA ÁUDIO NA TV
     document.body.addEventListener('click', () => {
         som.play();
         som.stop();
